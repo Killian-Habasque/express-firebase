@@ -24,7 +24,7 @@ app.use(cookieParser());
 //     next();
 //   });
 
-app.use('/', routes);
+app.use('/api', routes);
 
 const port = process.env.PORT || 8081;
 
