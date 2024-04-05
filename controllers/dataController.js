@@ -4,15 +4,10 @@ const db = require('../models/firebaseModel');
 
 const getData = async (req, res) => {
     try {
-        const token = req.cookies.token;
-        if (!token) {
-            return res.status(401).json({ error: 'Token non trouvé' });
-        } else {
-            const dataRef = collection(db, 'users');
-            const snapshot = await getDocs(dataRef);
-            const data = snapshot.docs.map(doc => doc.data());
-            res.json(data);
-        }
+        const dataRef = collection(db, 'users');
+        const snapshot = await getDocs(dataRef);
+        const data = snapshot.docs.map(doc => doc.data());
+        res.json(data);
     } catch (error) {
         console.error('Erreur lors de la récupération des données depuis Firestore', error);
         res.status(500).send('Erreur serveur');
