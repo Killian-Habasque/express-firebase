@@ -1,5 +1,5 @@
-const { collection, getDocs, addDoc } = require('firebase/firestore');
-const { getAuth, signInWithEmailAndPassword } = require('firebase/auth');
+const { collection, addDoc, query, where, getDocs } = require('firebase/firestore');
+const { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword  } = require('firebase/auth');
 const db = require('../models/firebaseModel');
 
 const getData = async (req, res) => {
@@ -40,4 +40,34 @@ const login = async (req, res) => {
     }
 };
 
-module.exports = { getData, login};
+const register = async (req, res) => {
+    const { pseudo, password } = req.body;
+
+    try {
+        const q = query(collection(db, 'users'), where('pseudo', '==', pseudo));
+        const userRef = await getDocs(q);
+
+        if (!userRef.empty) {
+            return res.status(400).json({ error: 'Le pseudo est déjà pris. Veuillez en choisir un autre.' });
+        }
+        const email = pseudo + "@yatzee.fr"
+        const auth = getAuth();
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        const userData = {
+            uid: user.uid,
+            pseudo: pseudo,
+            bestscore: 0
+        };
+        const newUserRef = await addDoc(collection(db, 'users'), userData);
+        
+        res.status(200).json({ uid: user.uid, email: userData.pseudo });
+    } catch (error) {
+        console.error('Erreur lors de l\'inscription utilisateur', error);
+        res.status(400).json({ error: 'Erreur lors de l\'inscription', details: error.message });
+    }
+};
+
+
+module.exports = { getData, login, register};

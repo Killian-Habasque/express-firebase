@@ -5,7 +5,7 @@ const registerForm = document.getElementById("register-form");
 registerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const emailInput = document.getElementById("email");
+  const emailInput = document.getElementById("text");
   const passwordInput = document.getElementById("password");
 
   try {
