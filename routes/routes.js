@@ -1,18 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const dataController = require('../controllers/dataController');
+const userController = require('../controllers/userController');
+const scoreController = require('../controllers/scoreController');
 const middleware = require('../middlewares');
 
 router.get('/', (req, res) => {
   res.send('Bienvenue sur votre API !');
 });
 
-// router.get('/data', dataController.getData);
-router.get('/user', middleware.verifyToken, dataController.getUser);
-router.get('/scores', dataController.getScores);
-router.post('/score', dataController.setScore);
-router.post('/login', dataController.login);
-router.post('/register', dataController.register);
-router.post('/logout', dataController.logout);
+router.get('/user', middleware.verifyToken, userController.getUser);
+router.post('/login', userController.login);
+router.post('/register', userController.register);
+router.post('/logout', userController.logout);
+
+router.get('/scores', scoreController.getScores);
+router.post('/score', scoreController.setScore);
 
 module.exports = router;

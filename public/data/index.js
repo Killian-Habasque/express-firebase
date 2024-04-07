@@ -1,4 +1,5 @@
-import { client } from "./client.js";
+import { user } from "./user.js";
+import { score } from "./score.js";
 
 const registerForm = document.getElementById("register-form");
 
@@ -9,7 +10,7 @@ registerForm.addEventListener("submit", async (event) => {
   const passwordInput = document.getElementById("password");
 
   try {
-    const { message } = await client.auth.register(emailInput.value, passwordInput.value);
+    const { message } = await user.auth.register(emailInput.value, passwordInput.value);
     console.log(message); // Affichez un message de succès après l'inscription
   } catch (error) {
     console.error("Registration error:", error);
@@ -22,7 +23,7 @@ loginForm.addEventListener("submit", async (event) => {
   const emailInput = document.getElementById("login-text");
   const passwordInput = document.getElementById("login-password");
   try {
-    const data = await client.auth.login(emailInput.value, passwordInput.value);
+    const data = await user.auth.login(emailInput.value, passwordInput.value);
     if (data.error) {
       console.error('Login error:', data.error);
       alert('Échec de la connexion: ' + data.error);
@@ -41,7 +42,7 @@ const logout = document.getElementById("logout");
 logout.addEventListener("click", async (event) => {
   event.preventDefault();
   try {
-    const data = await client.auth.logout();
+    const data = await user.auth.logout();
     if (data.error) {
       console.error('Logout error:', data.error);
       alert('Échec de la déconnexion: ' + data.error);
@@ -58,16 +59,16 @@ logout.addEventListener("click", async (event) => {
 
 
 document.addEventListener("DOMContentLoaded", async (event) => {
-  const score = document.getElementById("data-score");
+  const board = document.getElementById("data-score");
   try {
-    const data = await client.auth.getScores();
+    const data = await score.board.getScores();
 
     if (data.error) {
       console.error('Scores error:', data.error);
       alert('Erreur lors de la récupération des scores: ' + data.error);
     }
 
-    score.innerHTML = '';
+    board.innerHTML = '';
 
     data.forEach((user, index) => {
       const listItem = document.createElement('li');
@@ -87,7 +88,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
                 <span class="username">${user.pseudo}</span>
                 <span class="score">${user.bestscore}</span>
             `;
-      score.appendChild(listItem);
+      board.appendChild(listItem);
     });
 
 
@@ -101,7 +102,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 document.addEventListener("DOMContentLoaded", async (event) => {
   const profil = document.getElementById("data-user");
   try {
-    const data = await client.auth.getUser();
+    const data = await user.auth.getUser();
     if (data) {
       profil.innerHTML = `
                 <li class="position">${data.pseudo}</li>
