@@ -32,76 +32,19 @@
     </fieldset>
 
     <fieldset>
+        Classement
+        <ul id="data-score"></ul>
+    </fieldset>
+
+    <fieldset>
         User data
+        <ul id="data-user"></ul>
     </fieldset>
 
     <script src="js/index.js" type="module"></script>
-<!-- 
 
-    <fieldset>
-        <form id="loginForm">
-            <h2>Connexion</h2>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="password">Mot de passe:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="button" onclick="login()">Se connecter</button>
-        </form>
-    </fieldset> -->
+   
 
-    <script>
-        // async function login() {
-        //     const email = document.getElementById('email').value;
-        //     const password = document.getElementById('password').value;
-
-        //     try {
-        //         const response = await fetch('https://yams-backend.vercel.app/api/login', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //             },
-        //             body: JSON.stringify({ email, password }),
-        //         });
-
-        //         const data = await response.json();
-
-        //         if (response.ok) {
-        //             alert('Connexion réussie');
-        //             console.log('Utilisateur connecté:', data);
-        //         } else {
-        //             if (data.error) { // Vérifiez si la clé 'error' est présente dans la réponse JSON
-        //                 alert('Échec de la connexion: ' + data.error);
-        //                 console.error('Erreur lors de la connexion:', data.error);
-        //             } else {
-        //                 alert('Échec de la connexion');
-        //                 console.error('Erreur lors de la connexion:', data);
-        //             }
-        //         }
-
-        //     } catch (error) {
-        //         console.error('Erreur lors de la connexion utilisateur', error);
-        //         alert('Échec de la connexion: ' + error.error);
-        //         console.error('Détails de l\'erreur:', error.details);
-        //     }
-        // }
-    </script>
-
-
-
-    <ul id="dataList"></ul>
-    <script>
-        // fetch('https://yams-backend.vercel.app/api/data')
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         const dataList = document.getElementById('dataList');
-        //         data.forEach(item => {
-        //             const listItem = document.createElement('li');
-        //             listItem.textContent = JSON.stringify(item);
-        //             dataList.appendChild(listItem);
-        //         });
-        //     })
-        //     .catch(error => console.error('Erreur lors de la récupération des données:', error));
-    </script>
 </body>
 
 </html>

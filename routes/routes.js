@@ -8,7 +8,9 @@ router.get('/', (req, res) => {
 });
 
 // router.get('/data', dataController.getData);
-router.get('/data', middleware.verifyToken, dataController.getUser);
+router.get('/user', middleware.verifyToken, dataController.getUser);
+router.get('/scores', dataController.getScores);
+router.post('/score', dataController.setScore);
 router.post('/login', dataController.login);
 router.post('/register', dataController.register);
 router.post('/logout', dataController.logout);
