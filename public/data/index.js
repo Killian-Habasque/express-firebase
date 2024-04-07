@@ -30,6 +30,7 @@ loginForm.addEventListener("submit", async (event) => {
     } else {
       console.log('Connexion réussie');
       console.log('Utilisateur connecté:', data);
+      initUser()
       // Faire quelque chose après une connexion réussie, comme rediriger l'utilisateur
     }
   } catch (error) {
@@ -49,6 +50,7 @@ logout.addEventListener("click", async (event) => {
     } else {
       console.log('Déconnexion réussie');
       console.log('Utilisateur déconnecté:', data);
+      initUser()
     }
   } catch (error) {
     console.error('Erreur lors de la déconnexion utilisateur', error);
@@ -99,18 +101,19 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 });
 
 
-document.addEventListener("DOMContentLoaded", async (event) => {
+async function initUser() {
   const profil = document.getElementById("data-user");
   try {
     const data = await user.auth.getUser();
     if (data) {
       profil.innerHTML = `
-                <li class="position">${data.pseudo}</li>
-                <li class="username">${data.bestscore}</li>
-            `;
+                  <li class="position">${data.pseudo}</li>
+                  <li class="username">${data.bestscore}</li>
+              `;
     }
-
   } catch (error) {
     console.error('Erreur lors de la récupération des scores', error);
+    profil.innerHTML = '';
   }
-});
+}
+initUser()
