@@ -8,8 +8,9 @@ router.get('/', (req, res) => {
 });
 
 // router.get('/data', dataController.getData);
-router.get('/data', middleware.verifyToken, dataController.getData);
+router.get('/data', middleware.verifyToken, dataController.getUser);
 router.post('/login', dataController.login);
 router.post('/register', dataController.register);
+router.post('/logout', dataController.logout);
 
 module.exports = router;

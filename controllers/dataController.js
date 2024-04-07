@@ -2,22 +2,12 @@ const { collection, addDoc, query, where, getDocs } = require('firebase/firestor
 const { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword  } = require('firebase/auth');
 const db = require('../models/firebaseModel');
 
-const getData = async (req, res) => {
-    try {
-        const dataRef = collection(db, 'users');
-        const snapshot = await getDocs(dataRef);
-        const data = snapshot.docs.map(doc => doc.data());
-        res.json(data);
-    } catch (error) {
-        console.error('Erreur lors de la récupération des données depuis Firestore', error);
-        res.status(500).send('Erreur serveur');
-    }
-};
 
 const login = async (req, res) => {
-    const { email, password } = req.body;
+    const { pseudo, password } = req.body;
 
     try {
+        const email = pseudo + '@yatzee.fr'
         const auth = getAuth();
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
@@ -41,7 +31,7 @@ const login = async (req, res) => {
 };
 
 const register = async (req, res) => {
-    const { pseudo, password } = req.body;
+    const { pseudo, password, score } = req.body;
 
     try {
         const q = query(collection(db, 'users'), where('pseudo', '==', pseudo));
@@ -58,10 +48,10 @@ const register = async (req, res) => {
         const userData = {
             uid: user.uid,
             pseudo: pseudo,
-            bestscore: 0
+            bestscore: score ?? 0
         };
         const newUserRef = await addDoc(collection(db, 'users'), userData);
-        
+
         res.status(200).json({ uid: user.uid, email: userData.pseudo });
     } catch (error) {
         console.error('Erreur lors de l\'inscription utilisateur', error);
@@ -69,5 +59,74 @@ const register = async (req, res) => {
     }
 };
 
+const logout = async (req, res) => {
+    try {
+        res.clearCookie('token');
+        res.status(200).json({ message: 'Déconnexion réussie' });
+    } catch (error) {
+        console.error('Erreur lors de la déconnexion utilisateur', error);
+        res.status(500).json({ error: 'Erreur serveur lors de la déconnexion' });
+    }
+};
 
-module.exports = { getData, login, register};
+const getUser = async (req, res) => {
+    try {
+        const { uid } = req.user;
+        const dataRef = collection(db, 'users');
+        const snapshot = await getDocs(dataRef);
+
+        let userDoc;
+        snapshot.forEach((doc) => {
+            if (doc.data().uid === uid) {
+                userDoc = doc;
+            }
+        });
+        if (!userDoc) {
+            console.error('Utilisateur non trouvé.');
+            return res.status(404).json({ error: 'Utilisateur non trouvé' });
+        }
+
+        const userData = userDoc.data();
+        res.status(200).json({
+            uid: userData.uid,
+            email: userData.email,
+            pseudo: userData.pseudo,
+            bestscore: userData.bestscore,
+        });
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données', error);
+        res.status(500).send('Erreur serveur');
+    }
+};
+
+const setScore = async (req, res) => {
+    
+    // try {
+    //     const dataRef = collection(db, 'users');
+    //     const snapshot = await getDocs(dataRef);
+    //     const data = snapshot.docs.map(doc => doc.data());
+    //     data.sort((a, b) => b.bestscore - a.bestscore);
+    //     res.json(data);
+    // } catch (error) {
+    //     console.error('Erreur lors de la récupération des données depuis Firestore', error);
+    //     res.status(500).send('Erreur serveur');
+    // }
+};
+
+
+const getScores = async (req, res) => {
+    // try {
+    //     const dataRef = collection(db, 'users');
+    //     const snapshot = await getDocs(dataRef);
+    //     const data = snapshot.docs.map(doc => doc.data());
+    //     data.sort((a, b) => b.bestscore - a.bestscore);
+    //     res.json(data);
+    // } catch (error) {
+    //     console.error('Erreur lors de la récupération des données depuis Firestore', error);
+    //     res.status(500).send('Erreur serveur');
+    // }
+};
+
+
+
+module.exports = { getScores, setScore, getUser, login, register, logout};
