@@ -14,6 +14,6 @@ router.post('/register', userController.register);
 router.post('/logout', userController.logout);
 
 router.get('/scores', scoreController.getScores);
-router.post('/score', scoreController.setScore);
+router.put('/score', middleware.verifyToken, scoreController.setScore);
 
 module.exports = router;

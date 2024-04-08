@@ -117,3 +117,24 @@ async function initUser() {
   }
 }
 initUser()
+
+
+const addScore = document.getElementById("add-score");
+addScore.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  try {
+    const scoreValue = document.getElementById("value-score");
+    console.log(scoreValue.value)
+    const data = await score.board.setScore(scoreValue.value);
+    if (data.error) {
+      console.error('Update score error:', data.error);
+      alert('Échec de la modification du score: ' + data.error);
+    } else {
+      console.log('Score modifié:', data);
+      initUser()
+    }
+  } catch (error) {
+    console.error('Échec de la modification du score', error);
+    alert('Échec de la modification du score: ' + error.message);
+  }
+});
