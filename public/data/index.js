@@ -1,6 +1,10 @@
+
+
+import * as THREE from '../node_modules/three/build/three.module.js';
+console.log(THREE)
 import { user } from "./user.js";
 import { score } from "./score.js";
-
+// console.log(THREE )
 const registerForm = document.getElementById("register-form");
 
 registerForm.addEventListener("submit", async (event) => {
