@@ -10,6 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tweenjs/tween.js": "^23.1.1",
+    "cannon-es": "^0.20.0",
+    "dat.gui": "^0.7.9",
     "three": "^0.164.1"
   }
 }

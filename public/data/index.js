@@ -1,7 +1,13 @@
 
 
-import * as THREE from '../node_modules/three/build/three.module.js';
-console.log(THREE)
+import * as THREE from 'three';
+import * as dat from 'dat.gui';
+import * as CANNON from 'cannon';
+import * as TWEEN from 'tween';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
+
+console.log(BufferGeometryUtils)
 import { user } from "./user.js";
 import { score } from "./score.js";
 // console.log(THREE )
