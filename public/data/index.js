@@ -1,13 +1,13 @@
 
 
-// import * as THREE from 'three';
-// import * as dat from 'dat.gui';
-// import * as CANNON from 'cannon';
-// import * as TWEEN from 'tween';
-// import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-// import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
+import * as THREE from 'three';
+import * as dat from 'dat.gui';
+import * as CANNON from 'cannon';
+import * as TWEEN from 'tween';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
 
-// console.log(BufferGeometryUtils)
+console.log(THREE)
 import { user } from "./user.js";
 import { score } from "./score.js";
 // console.log(THREE )
