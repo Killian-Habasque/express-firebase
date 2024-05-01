@@ -10,6 +10,7 @@
 <body>
     <h1>Données de l'API</h1>
 
+    <p id="userError"></p>
     <fieldset>
         <h2>Sign</h2>
         <form id="register-form">
@@ -48,17 +49,7 @@
         </form>
     </fieldset>
 
-    <script type="importmap">
-        {
-          "imports": {
-            "three": "./node_modules/three/build/three.module.js",
-            "three/addons/": "./node_modules/three/examples/jsm/",
-            "dat.gui": "./node_modules/dat.gui/build/dat.gui.module.js",
-            "tween": "./node_modules/@tweenjs/tween.js/dist/tween.esm.js",
-            "cannon": "./node_modules/cannon-es/dist/cannon-es.js"
-          }
-        }
-      </script>
+
     <script src="data/index.js" type="module"></script>
 
 

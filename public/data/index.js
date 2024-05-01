@@ -1,51 +1,63 @@
 
-
-import * as THREE from 'three';
-import * as dat from 'dat.gui';
-import * as CANNON from 'cannon';
-import * as TWEEN from 'tween';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
-
-console.log(THREE)
 import { user } from "./user.js";
 import { score } from "./score.js";
-// console.log(THREE )
+
+function displayUserError(errorMessage) {
+  const errorSection = document.getElementById('userError');
+  errorSection.textContent = errorMessage;
+}
+
+
 const registerForm = document.getElementById("register-form");
 
 registerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const emailInput = document.getElementById("text");
+  const pseudoInput = document.getElementById("text");
   const passwordInput = document.getElementById("password");
 
+  if (pseudoInput.value.trim() === '' || passwordInput.value.trim() === '') {
+    displayUserError("Veuillez remplir tous les champs.");
+    return;
+  }
+  
   try {
-    const { message } = await user.auth.register(emailInput.value, passwordInput.value);
-    console.log(message); // Affichez un message de succès après l'inscription
+    const response = await user.auth.register(pseudoInput.value, passwordInput.value);
+    if (response.error) {
+      displayUserError(response.error); // Affichez l'erreur renvoyée par le backend
+    } else {
+      console.log("Inscription réussie:", response);
+    }
   } catch (error) {
     console.error("Registration error:", error);
+    displayUserError(error.message);
   }
 });
 
 const loginForm = document.getElementById("login-form");
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  const emailInput = document.getElementById("login-text");
+  const pseudoInput = document.getElementById("login-text");
   const passwordInput = document.getElementById("login-password");
+
+  if (pseudoInput.value.trim() === '' || passwordInput.value.trim() === '') {
+    displayUserError("Veuillez remplir tous les champs.");
+    return;
+  }
+
   try {
-    const data = await user.auth.login(emailInput.value, passwordInput.value);
+    const data = await user.auth.login(pseudoInput.value, passwordInput.value);
     if (data.error) {
       console.error('Login error:', data.error);
-      alert('Échec de la connexion: ' + data.error);
+      displayUserError('Échec de la connexion: ' + data.error);
     } else {
       console.log('Connexion réussie');
       console.log('Utilisateur connecté:', data);
       initUser()
-      // Faire quelque chose après une connexion réussie, comme rediriger l'utilisateur
     }
   } catch (error) {
     console.error('Erreur lors de la connexion utilisateur', error);
-    alert('Échec de la connexion: ' + error.message);
+    displayUserError('Échec de la connexion: ' + error.message); 
   }
 });
 
@@ -56,7 +68,6 @@ logout.addEventListener("click", async (event) => {
     const data = await user.auth.logout();
     if (data.error) {
       console.error('Logout error:', data.error);
-      alert('Échec de la déconnexion: ' + data.error);
     } else {
       console.log('Déconnexion réussie');
       console.log('Utilisateur déconnecté:', data);
@@ -64,11 +75,8 @@ logout.addEventListener("click", async (event) => {
     }
   } catch (error) {
     console.error('Erreur lors de la déconnexion utilisateur', error);
-    alert('Échec de la déconnexion: ' + error.message);
   }
 });
-
-
 
 document.addEventListener("DOMContentLoaded", async (event) => {
   const board = document.getElementById("data-score");
@@ -77,7 +85,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 
     if (data.error) {
       console.error('Scores error:', data.error);
-      alert('Erreur lors de la récupération des scores: ' + data.error);
     }
 
     board.innerHTML = '';
@@ -106,10 +113,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 
   } catch (error) {
     console.error('Erreur lors de la récupération des scores', error);
-    alert('Erreur lors de la récupération des scores: ' + error.message);
   }
 });
-
 
 async function initUser() {
   const profil = document.getElementById("data-user");
@@ -122,12 +127,10 @@ async function initUser() {
               `;
     }
   } catch (error) {
-    console.error('Erreur lors de la récupération des scores', error);
     profil.innerHTML = '';
   }
 }
 initUser()
-
 
 const addScore = document.getElementById("add-score");
 addScore.addEventListener("submit", async (event) => {
@@ -138,13 +141,11 @@ addScore.addEventListener("submit", async (event) => {
     const data = await score.board.setScore(scoreValue.value);
     if (data.error) {
       console.error('Update score error:', data.error);
-      alert('Échec de la modification du score: ' + data.error);
     } else {
       console.log('Score modifié:', data);
       initUser()
     }
   } catch (error) {
     console.error('Échec de la modification du score', error);
-    alert('Échec de la modification du score: ' + error.message);
   }
 });
